@@ -9,6 +9,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Pedido.Infra.Data;
+using Pedido.Model.Services;
+using Pedido.Infra.Repositories;
+using Pedido.Model.Repositories;
 
 namespace Pedido.Service
 {
@@ -36,16 +39,17 @@ namespace Pedido.Service
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("PedidoConn"),
                     b => b.MigrationsAssembly("Pedido.Service")
-          )
-      );
+            ));
 
+            services.AddScoped<IPedidoCadastroService, PedidoCadastroService>();
+            services.AddScoped<IPedidoRepository, PedidoRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();            
+            loggerFactory.AddDebug();
             app.UseMvc();
         }
     }

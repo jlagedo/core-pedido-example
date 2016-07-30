@@ -14,7 +14,7 @@ namespace Pedido.Model.Services
         public PedidoCadastroService(IPedidoRepository pedidoRepository)
         {
             this.pedidoRepository = pedidoRepository;
-        }        
+        }
 
         public async Task<PedidoCadastro> RegistrarAsync(RegistroPedidoCadastroCommand command)
         {
@@ -26,7 +26,7 @@ namespace Pedido.Model.Services
                 IdPessoa = command.IdPessoa
             };
 
-            await pedidoRepository.Insert(pedido);
+            var x = await pedidoRepository.Insert(pedido);
 
             return pedido;
         }

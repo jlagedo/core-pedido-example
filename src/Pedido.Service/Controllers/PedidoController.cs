@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pedido.Service.Contracts;
 using Pedido.Model.Services;
 using Pedido.Model.Commands;
+using System.Diagnostics;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -37,10 +38,23 @@ namespace Pedido.Service.Controllers
 
         // POST api/values
         [HttpPost]
-        public async void Post([FromBody]RegistroPedidoCadastroDTO value)
+        public async Task<IActionResult> Post([FromBody]RegistroPedidoCadastroDTO value)
         {
-            var command = new RegistroPedidoCadastroCommand();
-            await pedidoService.RegistrarAsync(command);
+            try
+            {
+                var command = new RegistroPedidoCadastroCommand
+                {
+                    IdPessoa = value.IdPessoa
+                };
+                await pedidoService.RegistrarAsync(command);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex.ToString());
+                return BadRequest();
+            }
         }
 
         // PUT api/values/5
