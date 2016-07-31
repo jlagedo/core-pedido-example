@@ -11,6 +11,10 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pedido.Model", "src\Pedido.
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Pedido.Web", "src\Pedido.Web\Pedido.Web.xproj", "{DC5364F0-9BAC-40D1-A9D5-9F52C35E1A3B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AE4B92A7-0366-480F-8410-93A898E9B02C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{8C64731E-9195-456C-9773-C1BC24560EDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +40,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{56C7B83D-AA69-4734-AE1C-B2CF36F68670} = {AE4B92A7-0366-480F-8410-93A898E9B02C}
+		{DDE70757-8391-4503-8105-383A80575FB8} = {AE4B92A7-0366-480F-8410-93A898E9B02C}
+		{650137E6-476D-43C2-89F3-9E9D4C7DEA19} = {AE4B92A7-0366-480F-8410-93A898E9B02C}
+		{DC5364F0-9BAC-40D1-A9D5-9F52C35E1A3B} = {AE4B92A7-0366-480F-8410-93A898E9B02C}
 	EndGlobalSection
 EndGlobal
