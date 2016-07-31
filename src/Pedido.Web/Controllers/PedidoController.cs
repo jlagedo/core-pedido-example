@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Pedido.Web.Services;
 using Pedido.Web.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -12,52 +13,26 @@ namespace Pedido.Web.Controllers
 {
     public class PedidoController : Controller
     {
-        [ResponseCache(Duration =60)]
-        public async Task<IActionResult> Index(int id)
+        private readonly IPedidoServiceClient pedidoService;
+
+        public PedidoController(IPedidoServiceClient pedidoService)
         {
-            PedidoCadastroViewModel pedidoCadastro = null;
-
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://localhost:5000/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                var response = await client.GetAsync($"/api/pedido?id={id}");
-                response.EnsureSuccessStatusCode();
-
-                var formatters = new List<MediaTypeFormatter>() {
-                    new JsonMediaTypeFormatter(),
-                };
-
-                pedidoCadastro = await response.Content.ReadAsAsync<PedidoCadastroViewModel>();
-            }
-
-            return View(pedidoCadastro);
+            this.pedidoService = pedidoService;
         }
 
-
-        public async Task<IActionResult> RegistrarPedido()
+        public async Task<IActionResult> Index(int id)
         {
+            var dto = await pedidoService.PesquisaPorIdAsync(id);
 
-            using (var client = new HttpClient())
+            PedidoCadastroViewModel pedidoCadastro = new PedidoCadastroViewModel
             {
-                client.BaseAddress = new Uri("http://localhost:5000/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                DataAlteracao = dto.DataAlteracao,
+                Guid = dto.Guid,
+                IdPessoa = dto.IdPessoa,
+                PedidoCadastroId = dto.PedidoCadastroId
+            };
 
-                var pedido = new { IdPessoa = 10 };
-
-                var response = await client.PostAsJsonAsync("/api/pedido", pedido);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return Ok();
-                }
-
-            }
-
-            return Ok();
+            return View(pedidoCadastro);
         }
 
     }
