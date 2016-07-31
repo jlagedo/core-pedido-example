@@ -46,5 +46,15 @@ namespace Pedido.Web.Services
                 response.EnsureSuccessStatusCode();
             }
         }
+
+        public async Task<IEnumerable<PedidoCadastroDTO>> PesquisaMaisRecentesAsync()
+        {
+            using (var client = BuildClient())
+            {
+                var response = await client.GetAsync($"/api/pedido?top=50");
+                response.EnsureSuccessStatusCode();
+                return await response.Content.ReadAsAsync<List<PedidoCadastroDTO>>();
+            }
+        }
     }
 }

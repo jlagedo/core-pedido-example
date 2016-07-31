@@ -8,6 +8,7 @@ namespace Pedido.Web.Controllers
 {
     public class HomeController : Controller
     {
+        [ResponseCache]
         public IActionResult Index()
         {
             return View();

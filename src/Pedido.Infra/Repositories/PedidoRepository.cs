@@ -26,6 +26,18 @@ namespace Pedido.Infra.Repositories
             return pedidoCadastro;
         }
 
+        public Task<List<PedidoCadastro>> ListarTopPorData(int top)
+        {
+            if (top <= 0)
+                throw new ArgumentOutOfRangeException("top");
+
+            var pedidos = dbContext.Pedidos
+                            .OrderByDescending(p => p.DataAlteracao)
+                            .Take(top);
+
+            return pedidos.ToListAsync();
+        }
+
         public Task<PedidoCadastro> Pesquisar(int id)
         {
             return dbContext.Pedidos.FirstOrDefaultAsync(p => p.PedidoCadastroId == id);

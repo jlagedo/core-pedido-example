@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Pedido.Web.Controllers
 {
@@ -20,19 +21,26 @@ namespace Pedido.Web.Controllers
             this.pedidoService = pedidoService;
         }
 
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index()
         {
-            var dto = await pedidoService.PesquisaPorIdAsync(id);
+            var listaPedidoDTO = await pedidoService.PesquisaMaisRecentesAsync();
 
-            PedidoCadastroViewModel pedidoCadastro = new PedidoCadastroViewModel
+            var vm = new PedidoIndexViewModel();
+
+            foreach (var item in listaPedidoDTO)
             {
-                DataAlteracao = dto.DataAlteracao,
-                Guid = dto.Guid,
-                IdPessoa = dto.IdPessoa,
-                PedidoCadastroId = dto.PedidoCadastroId
-            };
+                vm.Pedidos.Add(
+                    new PedidoIndexItemViewModel
+                    {
+                        PedidoCadastroId = item.PedidoCadastroId,
+                        DataAlteracao = item.DataAlteracao,
+                        IdPessoa = item.IdPessoa,
+                        Guid = item.Guid
+                    }
+                    );
+            }
 
-            return View(pedidoCadastro);
+            return View(vm);
         }
 
     }

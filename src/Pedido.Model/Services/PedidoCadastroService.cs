@@ -16,6 +16,12 @@ namespace Pedido.Model.Services
             this.pedidoRepository = pedidoRepository;
         }
 
+        public async Task<List<PedidoCadastro>> ListarTopPorData(int top)
+        {
+            List<PedidoCadastro> lista = await pedidoRepository.ListarTopPorData(top);
+            return lista;
+        }
+
         public async Task<PedidoCadastro> PesquisarAsync(int id)
         {
             PedidoCadastro pedidoCadastro = await pedidoRepository.Pesquisar(id);

@@ -9,5 +9,6 @@ namespace Pedido.Web.Services
     {
         Task<PedidoCadastroDTO> PesquisaPorIdAsync(int id);
         Task RegistrarAsync(PedidoCadastroDTO pedido);
+        Task<IEnumerable<PedidoCadastroDTO>> PesquisaMaisRecentesAsync();
     }
 }

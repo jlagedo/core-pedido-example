@@ -23,19 +23,35 @@ namespace Pedido.Service.Controllers
         private readonly IMemoryCache cache;
         private readonly ILogger<PedidoController> logger;
 
-        public PedidoController(
-            IPedidoCadastroService pedidoService,
-            ILogger<PedidoController> logger,
-            IMemoryCache memoryCache)
+        public PedidoController(IPedidoCadastroService pedidoService, ILogger<PedidoController> logger, IMemoryCache memoryCache)
         {
             this.pedidoService = pedidoService;
             this.cache = memoryCache;
             this.logger = logger;
         }
 
+        [HttpGet()]
+        public async Task<IActionResult> Get(int top = 100)
+        {
+            if (top > 500)
+                return new BadRequestResult();
+            try
+            {
+                List<PedidoCadastro> lista = await pedidoService.ListarTopPorData(top);
+                List<PedidoCadastroDTO> listaDTO = Mapper.Map<List<PedidoCadastroDTO>>(lista);
+                return Ok(lista);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex.Message, ex.StackTrace);
+                return new StatusCodeResult(500);
+            }
+
+        }
+
         // GET api/values
-        [HttpGet]
-        public async Task<IActionResult> Get(int id)
+        [HttpGet(template: "~/api/pedido/{id:int}")]
+        public async Task<IActionResult> GetId(int id)
         {
             string cacheKey = "pedido_" + id;
             PedidoCadastroDTO dto = null;
@@ -57,8 +73,8 @@ namespace Pedido.Service.Controllers
             }
             catch (Exception ex)
             {
-                Debug.Write(ex.ToString());
-                return BadRequest();
+                logger.LogError(ex.Message, ex.StackTrace);
+                return new StatusCodeResult(500);
             }
 
         }

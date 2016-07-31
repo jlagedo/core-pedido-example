@@ -10,5 +10,6 @@ namespace Pedido.Model.Services
     {
         Task<PedidoCadastro> RegistrarAsync(RegistroPedidoCadastroCommand command);
         Task<PedidoCadastro> PesquisarAsync(int id);
+        Task<List<PedidoCadastro>> ListarTopPorData(int top);
     }
 }
