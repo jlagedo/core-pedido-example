@@ -7,6 +7,7 @@ namespace Pedido.Service.Contracts
 {
     public class RegistroPedidoCadastroDTO
     {
-        public int IdPessoa { get; set; }
+        public string Nome { get; set; }
+        public int CPF { get; set; }
     }
 }

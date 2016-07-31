@@ -8,9 +8,10 @@ using Pedido.Infra.Data;
 namespace Pedido.Service.Migrations
 {
     [DbContext(typeof(PedidoContext))]
-    partial class PedidoContextModelSnapshot : ModelSnapshot
+    [Migration("20160731193944_Pessoa")]
+    partial class Pessoa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
@@ -26,8 +27,6 @@ namespace Pedido.Service.Migrations
                     b.Property<Guid>("Guid");
 
                     b.Property<int?>("PessoaId");
-
-                    b.Property<int>("Status");
 
                     b.HasKey("PedidoCadastroId");
 

@@ -33,9 +33,9 @@ namespace Pedido.Web.Controllers
                     new PedidoIndexItemViewModel
                     {
                         PedidoCadastroId = item.PedidoCadastroId,
-                        DataAlteracao = item.DataAlteracao,
-                        IdPessoa = item.IdPessoa,
-                        Guid = item.Guid
+                        CPF = item.CPF,
+                        Nome = item.Nome,
+                        Status = item.Status
                     }
                     );
             }

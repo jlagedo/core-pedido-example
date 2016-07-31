@@ -31,15 +31,28 @@ namespace Pedido.Service.Controllers
         }
 
         [HttpGet()]
-        public async Task<IActionResult> Get(int top = 100)
+        public async Task<IActionResult> Get(int top = 100, string nome = null)
         {
             if (top > 500)
                 return new BadRequestResult();
             try
             {
-                List<PedidoCadastro> lista = await pedidoService.ListarTopPorData(top);
-                List<PedidoCadastroDTO> listaDTO = Mapper.Map<List<PedidoCadastroDTO>>(lista);
-                return Ok(lista);
+                List<PedidoCadastro> lista = await pedidoService.ListarTopPorData(top, nome);
+
+                var listaDto = new List<ListaPedidoCadastroDTO>();
+
+                foreach (var item in lista)
+                {
+                    listaDto.Add(new ListaPedidoCadastroDTO
+                    {
+                        PedidoCadastroId = item.PedidoCadastroId,
+                        CPF = item.Pessoa.CPF,
+                        Nome = item.Pessoa.Nome,
+                        Status = item.Status.ToString()
+                    });
+                }
+
+                return Ok(listaDto);
             }
             catch (Exception ex)
             {
@@ -87,7 +100,8 @@ namespace Pedido.Service.Controllers
             {
                 var command = new RegistroPedidoCadastroCommand
                 {
-                    IdPessoa = value.IdPessoa
+                    Nome = value.Nome,
+                    CPF = value.CPF
                 };
                 await pedidoService.RegistrarAsync(command);
 
@@ -95,8 +109,8 @@ namespace Pedido.Service.Controllers
             }
             catch (Exception ex)
             {
-                Debug.Write(ex.ToString());
-                return BadRequest();
+                logger.LogError(ex.Message, ex);
+                return new StatusCodeResult(500);
             }
         }
 

@@ -10,6 +10,7 @@ namespace Pedido.Model
         public int PedidoCadastroId { get; set; }
         public DateTime DataAlteracao { get; set; }
         public Guid Guid { get; set; }
-        public int IdPessoa { get; set; }
+        public Pessoa Pessoa { get; set; }
+        public PedidoStatus Status { get; set; }
     }
 }

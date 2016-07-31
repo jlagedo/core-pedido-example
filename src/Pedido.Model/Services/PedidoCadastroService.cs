@@ -16,9 +16,9 @@ namespace Pedido.Model.Services
             this.pedidoRepository = pedidoRepository;
         }
 
-        public async Task<List<PedidoCadastro>> ListarTopPorData(int top)
+        public async Task<List<PedidoCadastro>> ListarTopPorData(int top, string nome)
         {
-            List<PedidoCadastro> lista = await pedidoRepository.ListarTopPorData(top);
+            List<PedidoCadastro> lista = await pedidoRepository.ListarTopPorData(top, nome);
             return lista;
         }
 
@@ -35,7 +35,12 @@ namespace Pedido.Model.Services
             {
                 DataAlteracao = DateTime.Now,
                 Guid = Guid.NewGuid(),
-                IdPessoa = command.IdPessoa
+                Status = PedidoStatus.Novo,
+                Pessoa = new Pessoa
+                {
+                    Nome = command.Nome,
+                    CPF = command.CPF
+                }        
             };
 
             var x = await pedidoRepository.Insert(pedido);

@@ -15,6 +15,7 @@ using Pedido.Model.Repositories;
 using AutoMapper;
 using Pedido.Model;
 using Pedido.Service.Contracts;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Pedido.Service
 {
@@ -41,8 +42,10 @@ namespace Pedido.Service
             services.AddDbContext<PedidoContext>(
                 options => options.UseSqlServer(
                     Configuration.GetConnectionString("PedidoConn"),
-                    b => b.MigrationsAssembly("Pedido.Service")
-            ));
+                    b => b.MigrationsAssembly("Pedido.Service"))
+                    // 
+                    //.ConfigureWarnings(warnings => warnings.Throw(RelationalEventId.QueryClientEvaluationWarning))
+                    );
 
             services.AddMemoryCache();
 

@@ -9,6 +9,6 @@ namespace Pedido.Model.Repositories
     {
         Task<PedidoCadastro> Insert(PedidoCadastro pedidoCadastro);
         Task<PedidoCadastro> Pesquisar(int id);
-        Task<List<PedidoCadastro>> ListarTopPorData(int top);
+        Task<List<PedidoCadastro>> ListarTopPorData(int top, string nome);
     }
 }

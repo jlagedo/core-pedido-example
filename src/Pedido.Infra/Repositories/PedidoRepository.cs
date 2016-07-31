@@ -26,14 +26,21 @@ namespace Pedido.Infra.Repositories
             return pedidoCadastro;
         }
 
-        public Task<List<PedidoCadastro>> ListarTopPorData(int top)
+        public Task<List<PedidoCadastro>> ListarTopPorData(int top, string nome)
         {
             if (top <= 0)
                 throw new ArgumentOutOfRangeException("top");
 
             var pedidos = dbContext.Pedidos
+                            .Include(p => p.Pessoa)
                             .OrderByDescending(p => p.DataAlteracao)
                             .Take(top);
+
+            if (!string.IsNullOrEmpty(nome))
+            {
+                //TODO: There's a bug on EF core, it's evaluating this on client side
+                pedidos = pedidos.Where(p => p.Pessoa.Nome.Contains(nome));
+            }
 
             return pedidos.ToListAsync();
         }
