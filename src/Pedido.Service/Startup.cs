@@ -12,6 +12,9 @@ using Pedido.Infra.Data;
 using Pedido.Model.Services;
 using Pedido.Infra.Repositories;
 using Pedido.Model.Repositories;
+using AutoMapper;
+using Pedido.Model;
+using Pedido.Service.Contracts;
 
 namespace Pedido.Service
 {
@@ -41,6 +44,8 @@ namespace Pedido.Service
                     b => b.MigrationsAssembly("Pedido.Service")
             ));
 
+            services.AddMemoryCache();
+
             services.AddScoped<IPedidoCadastroService, PedidoCadastroService>();
             services.AddScoped<IPedidoRepository, PedidoRepository>();
         }
@@ -51,6 +56,8 @@ namespace Pedido.Service
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
             app.UseMvc();
+
+            Mapper.Initialize(cfg => cfg.CreateMap<PedidoCadastro, PedidoCadastroDTO>());
         }
     }
 }

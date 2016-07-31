@@ -7,6 +7,10 @@ using Pedido.Service.Contracts;
 using Pedido.Model.Services;
 using Pedido.Model.Commands;
 using System.Diagnostics;
+using Pedido.Model;
+using AutoMapper;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,24 +20,47 @@ namespace Pedido.Service.Controllers
     public class PedidoController : Controller
     {
         private readonly IPedidoCadastroService pedidoService;
+        private readonly IMemoryCache cache;
+        private readonly ILogger<PedidoController> logger;
 
-        public PedidoController(IPedidoCadastroService pedidoService)
+        public PedidoController(
+            IPedidoCadastroService pedidoService,
+            ILogger<PedidoController> logger,
+            IMemoryCache memoryCache)
         {
             this.pedidoService = pedidoService;
+            this.cache = memoryCache;
+            this.logger = logger;
         }
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IActionResult> Get(int id)
         {
-            return new string[] { "value1", "value2" };
-        }
+            string cacheKey = "pedido_" + id;
+            PedidoCadastroDTO dto = null;
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            try
+            {
+                if (!cache.TryGetValue(cacheKey, out dto))
+                {
+                    PedidoCadastro pedido = await pedidoService.PesquisarAsync(id);
+                    dto = Mapper.Map<PedidoCadastroDTO>(pedido);
+
+                    cache.Set(cacheKey, dto,
+                          new MemoryCacheEntryOptions()
+                          .SetAbsoluteExpiration(TimeSpan.FromMinutes(10)));
+                    logger.LogInformation("Colocou objeto no cache key", cacheKey);
+
+                }
+                return Ok(dto);
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex.ToString());
+                return BadRequest();
+            }
+
         }
 
         // POST api/values

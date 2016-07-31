@@ -21,7 +21,9 @@
         "Microsoft.EntityFrameworkCore.Tools": {
             "version": "1.0.0-preview2-final",
             "type": "build"
-        }
+        },
+        "AutoMapper": "5.0.2",
+        "Microsoft.Extensions.Caching.Memory": "1.0.0"
     },
 
     "tools": {

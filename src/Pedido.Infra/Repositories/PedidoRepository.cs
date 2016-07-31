@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Pedido.Model;
 using Pedido.Infra.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Pedido.Infra.Repositories
 {
@@ -23,6 +24,11 @@ namespace Pedido.Infra.Repositories
             dbContext.Pedidos.Add(pedidoCadastro);
             await dbContext.SaveChangesAsync();
             return pedidoCadastro;
+        }
+
+        public Task<PedidoCadastro> Pesquisar(int id)
+        {
+            return dbContext.Pedidos.FirstOrDefaultAsync(p => p.PedidoCadastroId == id);
         }
     }
 }

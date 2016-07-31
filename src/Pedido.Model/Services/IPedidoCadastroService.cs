@@ -9,5 +9,6 @@ namespace Pedido.Model.Services
     public interface IPedidoCadastroService
     {
         Task<PedidoCadastro> RegistrarAsync(RegistroPedidoCadastroCommand command);
+        Task<PedidoCadastro> PesquisarAsync(int id);
     }
 }

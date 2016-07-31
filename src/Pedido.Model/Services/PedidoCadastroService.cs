@@ -16,6 +16,12 @@ namespace Pedido.Model.Services
             this.pedidoRepository = pedidoRepository;
         }
 
+        public async Task<PedidoCadastro> PesquisarAsync(int id)
+        {
+            PedidoCadastro pedidoCadastro = await pedidoRepository.Pesquisar(id);
+            return pedidoCadastro;
+        }
+
         public async Task<PedidoCadastro> RegistrarAsync(RegistroPedidoCadastroCommand command)
         {
 
