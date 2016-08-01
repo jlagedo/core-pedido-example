@@ -43,6 +43,11 @@ namespace Pedido.Web.Controllers
             return View(vm);
         }
 
+        [ValidateAntiForgeryToken]
+        public IActionResult Registro() {
+            return View();
+        }
+
     }
 }
 
